@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News Website</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Resetting some default browser styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body and font settings */
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+        color: #333;
+        width: 100%;
+        height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Header and Navigation */
+      header {
+        background-color: #0073e6;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      header .logo h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      nav ul li {
+        margin: 0 15px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      /* Filters (Country & Category selects) */
+      .filters {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .filters label {
+        font-size: 1rem;
+        margin-right: 10px;
+      }
+
+      .filters select {
+        padding: 8px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      /* Latest News */
+      .latest-news {
+        margin-top: 30px;
+      }
+
+      .latest-news h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      .news-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .news-item {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .news-item:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .news-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      video {
+        width: auto;
+        height: 200px;
+      }
+
+      .news-info {
+        padding: 15px;
+      }
+
+      .news-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      .news-info p {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+
+      .news-info a {
+        text-decoration: none;
+        color: #0073e6;
+        font-weight: bold;
+      }
+
+      .show-news {
+        width: 80%;
+        margin: 0 auto;
+        z-index: 999;
+        height: 90%;
+        overflow: auto;
+        background-color: rgb(255, 255, 255);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        display: none;
+      }
+
+      .show-news h2 {
+        font-size: 2rem;
+        margin: 20px;
+      }
+
+      .show-news p {
+        font-size: 1.2rem;
+        margin: 20px;
+      }
+
+      .show-news a {
+        /* display: block; */
+        text-align: center;
+        margin: 20px;
+        text-decoration: none;
+        color: #0073e6;
+        font-weight: bold;
+      }
+
+      .show-news button {
+        /* display: block; */
+        text-align: center;
+        margin: 20px;
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: bold;
+        background-color: #0073e6;
+        padding: 1.03rem;
+        border: none;
+        cursor: pointer;
+      }
+
+      .listen i {
+        cursor: pointer;
+        margin: 0 5px;
+      }
+
+      .listen {
+        background-color: #0073e6;
+        color: white;
+        border: none;
+        padding: 5px 20px;
+        cursor: pointer;
+        margin: 10px;
+        font-size: 1.02rem;
+      }
+      /* Footer */
+      footer {
+        text-align: center;
+        background-color: #333;
+        color: white;
+        padding: 10px 0;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1>News Today</h1>
+      </div>
+
+      <div class="filters">
+        <label for="country-select">Select Country: </label>
+        <select id="country-select" class="select">
+          <option value="US">United States (US)</option>
+          <option value="GB">United Kingdom (GB)</option>
+          <option value="CA">Canada (CA)</option>
+          <option value="IN">India (IN)</option>
+          <option value="DE">Germany (DE)</option>
+          <option value="FR">France (FR)</option>
+          <option value="IT">Italy (IT)</option>
+          <option value="ES">Spain (ES)</option>
+          <option value="AU">Australia (AU)</option>
+          <option value="BR">Brazil (BR)</option>
+          <option value="JP">Japan (JP)</option>
+          <option value="CN">China (CN)</option>
+          <option value="RU">Russia (RU)</option>
+          <option value="MX">Mexico (MX)</option>
+          <option value="KR">South Korea (KR)</option>
+        </select>
+
+        <label for="category-select">Select Category: </label>
+        <select id="category-select" class="select">
+          <option value="world">World</option>
+          <option value="technology">Technology</option>
+          <option value="sports">Sports</option>
+          <option value="business">Business</option>
+          <option value="health">Health</option>
+          <option value="science">Science</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="politics">Politics</option>
+          <option value="economy">Economy</option>
+          <option value="education">Education</option>
+          <option value="environment">Environment</option>
+          <option value="lifestyle">Lifestyle</option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="culture">Culture</option>
+        </select>
+      </div>
+    </header>
+
+    <main>
+      <section class="latest-news">
+        <h2>Latest News</h2>
+        <div class="news-grid"></div>
+      </section>
+    </main>
+
+    <div class="show-news"></div>
+
+    <footer>
+      <p>&copy; 2024 News Today. All rights reserved.</p>
+    </footer>
+  </body>
+
+  <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
+  <script>
+    let selectInputs = document.querySelectorAll(".select");
+    let text;
+    // Get news data
+    async function getNews() {
+      const countrySelect = document.getElementById("country-select").value;
+      const categorySelect = document.getElementById("category-select").value;
+      let api = "90becd85f674d046067f53153c755011";
+      let url = `http://api.mediastack.com/v1/news?access_key=${api}& keywords=${categorySelect}&countries=${countrySelect}`;
+
+      const options = {
+        method: "GET",
+      };
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        let news = data.data;
+
+        createNews(news);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    }
+
+    // Show news on page
+    const createNews = (news) => {
+      let newsGrid = document.querySelector(".news-grid");
+      // Clear existing news
+      newsGrid.innerHTML = "";
+
+      if (news.length === 0) {
+        newsGrid.innerHTML = "<p>No news available at the moment.</p>";
+        return;
+      }
+
+      news.forEach((newsItem) => {
+        let article = document.createElement("article");
+        article.classList.add("news-item");
+
+        // Determine if it's an image or video
+        let mediaContent = "";
+        if (newsItem.image) {
+          if (newsItem.image.endsWith(".mp4")) {
+            mediaContent = `<video controls>
+                          <source src="${newsItem.image}" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>`;
+          } else {
+            mediaContent = `<img src="${newsItem.image}" alt="${
+              newsItem.title || "No Title"
+            }">`;
+          }
+        } else {
+          mediaContent = `<img src="placeholder.jpg" alt="No media available">`;
+        }
+
+        article.innerHTML = `
+      ${mediaContent}
+      <div class="news-info">
+        <h3>${newsItem.title || "No Title"}</h3>
+        <a href="${newsItem.url || "#"}" target="_blank">Read more</a>
+      </div>
+           <button class="listen">
+              <i class="ri-play-circle-fill"></i>
+              Listen
+            </button>
+    `;
+        newsGrid.appendChild(article);
+        article.querySelector(".listen").addEventListener("click", () => {
+          getSummary(newsItem.url);
+          console.log("Clicked on:", newsItem.url);
+        });
+      });
+    };
+
+    // Get news summary
+    async function getSummary(url) {
+      const formdata = new FormData();
+      formdata.append("key", "78d7143f1a05eba02d020583da54886a");
+      formdata.append("url", `${url}`);
+      formdata.append("sentences", "8");
+
+      const requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      fetch("https://api.meaningcloud.com/summarization-1.0", requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json(); // Correctly await the body as JSON
+        })
+        .then((data) => {
+          console.log(url);
+          if (data.summary) {
+            const cleanedSummary = data.summary
+              .replace(/\[\.\.\.\]/g, "")
+              .replace(/https?:\/\/[\w\d./]+/g, "");
+
+            console.log("Cleaned Summary:", cleanedSummary);
+            listenNews(cleanedSummary);
+          }
+        })
+        .catch((error) => console.log("Error:", error)); // Handle errors
+    }
+
+    // Update news on select change
+    selectInputs.forEach((selectInput) => {
+      selectInput.addEventListener("change", () => {
+        getNews();
+        const countrySelect = document.getElementById("country-select").value;
+        const categorySelect = document.getElementById("category-select").value;
+        console.log("Country:", countrySelect, "Category:", categorySelect);
+      });
+    });
+
+    // Listen to news
+    const listenNews = (text) => {
+      responsiveVoice.speak(text, "UK English Male");
+    };
+
+    // Initial call
+    getNews();
+  </script>
+
+</html>
